@@ -131,12 +131,24 @@ def draw_stickman(x, y, size):
     draw_line(x, y - size // 2, x + size // 3, y - size)
 
 
+
+
+
 def draw_rectangle(x, y, width, height):
-    glBegin(GL_QUADS)
-    glVertex2f(x, y)
-    glVertex2f(x + width, y)
-    glVertex2f(x + width, y + height)
-    glVertex2f(x, y + height)
+    # Calculate rectangle corners
+    x_min, y_min = x, y
+    x_max, y_max = x + width, y + height
+
+
+    edges = []
+    edges.extend(midpoint_line(x_min, y_min, x_max, y_min))  # Bottom edge
+    edges.extend(midpoint_line(x_max, y_min, x_max, y_max))  # Right edge
+    edges.extend(midpoint_line(x_max, y_max, x_min, y_max))  # Top edge
+    edges.extend(midpoint_line(x_min, y_max, x_min, y_min))  # Left edge
+
+    glBegin(GL_POINTS)
+    for px, py in edges:
+        glVertex2i(px, py)
     glEnd()
 
 
